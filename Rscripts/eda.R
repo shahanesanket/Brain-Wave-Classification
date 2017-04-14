@@ -1,4 +1,4 @@
-dataset.test1 = read.csv('train_subject1_psd01.csv')
+dataset.test1 = read.csv('../data/training_data_complete.csv')
 plot(density(dataset.test1[dataset.test1$X7.00E.00==7,1]))
 lines(density(dataset.test1[dataset.test1$X7.00E.00==2,1]))
 lines(density(dataset.test1[dataset.test1$X7.00E.00==3,1]))
@@ -17,7 +17,7 @@ correlationDataframe = data.frame(correlationMatrix)
 
 for(i in seq(1,96,1)){
   for(j in seq(i,96,1)){
-    if(abs(correlationMatrix[i,j])>0.6 && i!=j){
+    if(abs(correlationMatrix[i,j])>0.70 && i!=j){
       print(paste(i,j,correlationMatrix[i,j]))
     }
   }
