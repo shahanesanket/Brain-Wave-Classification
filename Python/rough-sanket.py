@@ -79,3 +79,14 @@ temp_pca = pd.DataFrame(temp_pca)
 original_pca = pd.read_csv('data/pca_data.csv')
 
 exp_variance = list(pca.explained_variance_ratio_)
+
+# Try random forest and other classification techniques like SVM
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+import pandas as pd
+import numpy as np
+
+training_data = pd.read_csv('../data/pca_data.csv')
+rf = RandomForestClassifier(n_estimators = 10, n_jobs=-1)
+scores = cross_val_score(rf, training_data.iloc[:,:-1], training_data.iloc[:,-1], cv = 10)
+print scores
