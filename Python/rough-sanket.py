@@ -83,10 +83,48 @@ exp_variance = list(pca.explained_variance_ratio_)
 # Try random forest and other classification techniques like SVM
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
+from sklearn import svm
 import pandas as pd
 import numpy as np
+import pickle
+from sklearn import multiclass
 
 training_data = pd.read_csv('../data/pca_data.csv')
 rf = RandomForestClassifier(n_estimators = 10, n_jobs=-1)
 scores = cross_val_score(rf, training_data.iloc[:,:-1], training_data.iloc[:,-1], cv = 10)
 print scores
+# array([ 0.61895613,  0.66122318,  0.70637208,  0.56644252,  0.5429212 , 0.52946829,  0.54615385,  0.44038462,  0.44807692,  0.39807692])
+# 10 trees 51, 20 trees 52, 40 trees 55, 100 trees 56
+svc = multiclass.OneVsRestClassifier(svm.SVC(kernel='rbf'),n_jobs=-1)
+scores = cross_val_score(svc, training_data.iloc[:,:-1], training_data.iloc[:,-1], cv = 10, verbose=5)
+
+with open('../trained_models/svm_svc.pkl','wb') as f:
+	pickle.dump(clf,f)
+with open('../trained_models/svm_acc.txt','w') as f:
+	for item in scores:
+		f.write("%s\n" % item)
+print scores
+# [ 0.46269613  0.48543068  0.46237592  0.47966699  0.49199231  0.45996156 0.45288462  0.3849359   0.36634615  0.37051282]
+
+
+import pandas as pd
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn import preprocessing
+
+temp = pd.read_csv('../data/uncorrelated_training_data.csv')
+vec = list(temp.columns)
+temp = temp[vec[:-1]]
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler(feature_range=(0,1))
+
+scaled_data = scaler.fit_transform(temp)
+scaled_data = pd.DataFrame(scaled_data)
+scaled_data.to_csv('../data/scaled_data/scaled_uncorrelated_features.csv',index=False)
+
+scaled_data = pd.read_csv('../data/scaled_data/scaled_uncorrelated_features.csv')
+
+pca = PCA()
+temp_pca = pca.fit_transform(scaled_data)
+temp_pca = pd.DataFrame(temp_pca)
