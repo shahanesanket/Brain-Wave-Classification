@@ -2,6 +2,7 @@
 import numpy as np
 import pandas
 import h5py
+from keras.models import load_model
 from keras.models import Sequential
 from keras.layers import Dense
 #from keras.wrappers.scikit_learn import KerasClassifier
@@ -12,7 +13,7 @@ from sklearn.preprocessing import LabelEncoder
 seed = 7
 np.random.seed(seed)
 # load dataset
-dataframe = pandas.read_csv("../data/scaled_data/scaled_pca.csv")
+dataframe = pandas.read_csv("../data/training/scaled_data/scaled_pca.csv")
 dataframe = dataframe.sample(frac=1).reset_index(drop=True)
 dataset = dataframe.values
 X = dataset[:,:-1].astype(float)
@@ -32,17 +33,16 @@ model.add(Dense(3, kernel_initializer='normal', activation='sigmoid'))
 # Compile model
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # Fit the model
-model.fit(X, dummy_y, nb_epoch=1000, batch_size=150,  verbose=1)
-model.save('../trained_models/ff_nn_3.py')
+model.fit(X, dummy_y, nb_epoch=1000, batch_size=150,  verbose=2)
+model.save('../trained_models/ff_nn_3.h5')
+print 'training done and model saved'
 # calculate predictions
-predictions = model.predict(X)
+predict_x = X
+predict_y = Y
+predictions = model.predict(predict_x)
 print predictions
 predictions = np.argmax(predictions,axis=1)
 classes = np.unique(Y)
 p = classes[predictions]
 # print the accuracy
-print sum(Y == p)/float(len(Y))
-
-import pickle
-with open('../trained_models/ff_nn_1.pkl','wb') as f:
-	pickle.dump(model)
+print sum(predict_y == p)/float(len(predict_y))
