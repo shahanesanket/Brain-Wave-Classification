@@ -32,8 +32,8 @@ model.add(Dense(3, kernel_initializer='normal', activation='sigmoid'))
 # Compile model
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # Fit the model
-model.fit(X[:], dummy_y, nb_epoch=1000, batch_size=150,  verbose=1)
-
+model.fit(X, dummy_y, nb_epoch=1000, batch_size=150,  verbose=1)
+model.save('../trained_models/ff_nn_3.py')
 # calculate predictions
 predictions = model.predict(X)
 print predictions
