@@ -54,8 +54,6 @@ d3 = pd.read_csv('../data/train_subject3_psd03.csv',header=None)
 
 
 
-
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn import svm
@@ -92,3 +90,54 @@ with open('../trained_models/rf_results.txt','w') as f:
     for item in scores:
         f.write("%s\n" % item)
 print scores
+
+
+
+
+
+#Processing test data
+#Removing correlation
+
+test1 = pd.read_csv('../data/Testing/test_subject1_psd04.csv', header=None)
+test2 = pd.read_csv('../data/Testing/test_subject2_psd04.csv', header=None)
+test3 = pd.read_csv('../data/Testing/test_subject3_psd04.csv', header=None)
+
+correlated_features = [24,72]
+
+vec = list(test1.columns)
+for v in correlated_features:
+	vec.remove(v)
+
+test1_uncor = test1[vec]
+test2_uncor = test2[vec]
+test3_uncor = test3[vec]
+
+test1_uncor.to_csv('../data/Testing/uncorrelated_subject1_data.csv',index=False)
+test2_uncor.to_csv('../data/Testing/uncorrelated_subject2_data.csv',index=False)
+test3_uncor.to_csv('../data/Testing/uncorrelated_subject3_data.csv',index=False)
+
+
+# PCA
+from sklearn.decomposition import PCA
+from sklearn import preprocessing
+
+train = pd.read_csv('../data/Training/uncorrelated_training_data.csv')
+vec = list(train.columns)
+train = train[vec[:-1]]
+#preprocessing.scale(temp,axis=1,copy=False)
+pca = PCA()
+pca.fit(train)
+
+test1_pca = pca.transform(test1_uncor)
+test2_pca = pca.transform(test2_uncor)
+test3_pca = pca.transform(test3_uncor)
+
+test1_pca = pd.DataFrame(test1_pca)
+test2_pca = pd.DataFrame(test2_pca)
+test3_pca = pd.DataFrame(test3_pca)
+
+test1_pca.iloc[:,:40].to_csv('../Data/Testing/pca_subject1.csv', index=False)
+test2_pca.iloc[:,:40].to_csv('../Data/Testing/pca_subject2.csv', index=False)
+test3_pca.iloc[:,:40].to_csv('../Data/Testing/pca_subject3.csv', index=False)
+
+
