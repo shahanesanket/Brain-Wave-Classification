@@ -5,6 +5,8 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticD
 from sklearn.model_selection import cross_val_score
 from scipy.stats import mode
 
+from postProcessing import smoothening
+
 
 def LDA(input_data, test, actual, actual8):
 	model = LinearDiscriminantAnalysis()
@@ -13,9 +15,12 @@ def LDA(input_data, test, actual, actual8):
 	model.fit(input_data.iloc[:,:-1], input_data.iloc[:,-1])
 	pred = model.predict(test)
 	accuracy = sum(pred == actual)/float(len(actual))
+	spred = smoothening(pred)
+	saccuracy = sum(spred == actual)/float(len(actual))
 	pred8 = mergePredictions(pred, 8)
 	accuracy8 = sum(pred8 == actual8)/float(len(actual8))
 	print 'Test Accuracy for the subject is = ' + str(accuracy)
+	print 'Test Accuracy after smoothening for the subject is = ' + str(saccuracy)
 	print 'Test Accuracy for the subject at step 8 is = ' + str(accuracy8)
 
 

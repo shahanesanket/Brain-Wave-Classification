@@ -5,7 +5,10 @@ from sklearn.model_selection import cross_val_score
 from scipy.stats import mode
 from linearDiscriminantAnalysis import mergePredictions
 
+from postProcessing import smoothening
+
 sys.path.insert(0,'../lib/seqlearn/')
+sys.path.insert(0,'../lib/hmmlearn/')
 
 from seqlearn.perceptron import StructuredPerceptron
 
@@ -22,9 +25,12 @@ def perceptronTest(input_data, test, actual, actual8):
 	model.fit(input_data.iloc[:,:-1], input_data.iloc[:,-1], [len(input_data)])
 	pred = model.predict(test)
 	accuracy = sum(pred == actual)/float(len(actual))
+	spred = smoothening(pred)
+	saccuracy = sum(spred == actual)/float(len(actual))
 	pred8 = mergePredictions(pred, 8)
 	accuracy8 = sum(pred8 == actual8)/float(len(actual8))
 	print 'Test Accuracy for the subject is = ' + str(accuracy)
+	print 'Test Accuracy after smoothening for the subject is = ' + str(saccuracy)
 	print 'Test Accuracy for the subject at step 8 is = ' + str(accuracy8)
 
 
@@ -112,13 +118,16 @@ def mainPCAData():
 	# Results:
 	# Cross Validation Accuracy = 0.870042431112
 	# Test Accuracy for the subject is = 0.882705479452
+	# Test Accuracy after smoothening for the subject is = 0.880707762557
 	# Test Accuracy for the subject at step 8 is = 0.876712328767
 	# Cross Validation Accuracy = 0.754951838489
 	# Test Accuracy for the subject is = 0.802131336406
+	# Test Accuracy after smoothening for the subject is = 0.800979262673
 	# Test Accuracy for the subject at step 8 is = 0.797235023041
 	# Cross Validation Accuracy = 0.523014108367
 	# Test Accuracy for the subject is = 0.579128440367
+	# Test Accuracy after smoothening for the subject is = 0.579701834862
 	# Test Accuracy for the subject at step 8 is = 0.584862385321
 
 if __name__ == '__main__':
-	mainRawData()
+	mainPCAData()
