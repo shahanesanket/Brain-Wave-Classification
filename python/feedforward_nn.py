@@ -1,6 +1,6 @@
 # Train model and make predictions
 import numpy as np
-import pandas
+import pandas as pd
 import h5py
 from keras.models import load_model
 from keras.models import Sequential
@@ -9,40 +9,98 @@ from keras.layers import Dense
 from keras.utils import np_utils
 #from sklearn.cross_validation import train_test_split
 from sklearn.preprocessing import LabelEncoder
+
+
 # fix random seed for reproducibility
 seed = 7
 np.random.seed(seed)
-# load dataset
-dataframe = pandas.read_csv("../data/training/scaled_data/scaled_pca.csv")
-dataframe = dataframe.sample(frac=1).reset_index(drop=True)
-dataset = dataframe.values
-X = dataset[:,:-1].astype(float)
-Y = dataset[:,-1]
-# encode class values as integers
-encoder = LabelEncoder()
-encoder.fit(Y)
-encoded_Y = encoder.transform(Y)
-# convert integers to dummy variables (i.e. one hot encoded)
-dummy_y = np_utils.to_categorical(encoded_Y)
 
-# create model
-model = Sequential()
-model.add(Dense(12, input_dim=75, kernel_initializer='uniform', activation='relu'))
-model.add(Dense(8, kernel_initializer='uniform', activation='relu'))
-model.add(Dense(3, kernel_initializer='normal', activation='sigmoid'))
-# Compile model
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# Fit the model
-model.fit(X, dummy_y, nb_epoch=1000, batch_size=150,  verbose=2)
-model.save('../trained_models/ff_nn_3.h5')
-print 'training done and model saved'
-# calculate predictions
-predict_x = X
-predict_y = Y
-predictions = model.predict(predict_x)
-print predictions
-predictions = np.argmax(predictions,axis=1)
-classes = np.unique(Y)
-p = classes[predictions]
-# print the accuracy
-print sum(predict_y == p)/float(len(predict_y))
+
+def runModel(X, Y):
+	X = X.values
+	Y = Y.values
+	# encode class values as integers
+	encoder = LabelEncoder()
+	encoder.fit(Y)
+	encoded_Y = encoder.transform(Y)
+	# convert integers to dummy variables (i.e. one hot encoded)
+	dummy_y = np_utils.to_categorical(encoded_Y)
+
+	d = X.shape[1]
+
+	# create model
+	model = Sequential()
+	model.add(Dense(12, input_dim=d, kernel_initializer='uniform', activation='relu'))
+	model.add(Dense(8, kernel_initializer='uniform', activation='relu'))
+	model.add(Dense(3, kernel_initializer='normal', activation='sigmoid'))
+
+	# Compile model
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	
+	# Fit the model
+	model.fit(X, dummy_y, nb_epoch=500, batch_size=150,  verbose=2)
+	print 'Training Complete'
+
+	return model
+
+def saveModel(model, path):
+	model.save(path)
+	print 'Model saved'
+	#model.save('../trained_models/ff_nn_3.h5')
+
+def predictFromModel(model, testX, testY, classes):
+	testX = testX.values.astype(float)
+	testY = testY.values
+	predictions = model.predict(testX)
+	#print predictions
+	predictions = np.argmax(predictions,axis=1)
+	p = classes[predictions]
+
+	# print the accuracy
+	accuracy = sum(testY == p)/float(len(testY))
+	return accuracy
+
+
+# Load parameter. Set to false to train a new model and set to True to load model from existing file
+def runForSubject(subject, savepath, load=False):
+
+	dataframe = pd.read_csv("../data/training/pca_data_v2/pca_subject"+str(subject)+".csv")
+	dataframe = dataframe.sample(frac=1).reset_index(drop=True)
+	X = dataframe.iloc[:,:-1]
+	Y = dataframe.iloc[:,-1]
+	classes = np.unique(Y)
+
+	model = 0
+	if (load == False):
+		print 'Training new model'
+		model = runModel(X, Y)
+		saveModel(model, savepath)
+	else:
+		print 'Using existing model'
+		model = load_model(savepath)
+	
+	print 'Training accuracy = ' + str(predictFromModel(model, X, Y, classes))
+
+	test_data = pd.read_csv('../data/testing/pca_data_v2/pca_subject'+str(subject)+'.csv')
+	actual = pd.read_csv('../data/testing/ActualLables/labels_subject'+str(subject)+'_psd.csv', header=None)
+	#only get the values from the actual dataframe
+	actual = actual[0]
+
+	print 'Testing Accuracy = ' + str(predictFromModel(model, test_data, actual, classes))
+
+
+if __name__ == '__main__':
+	runForSubject(1, '../trained_models/feedForwardSubject1.h5', load=True)
+	runForSubject(2, '../trained_models/feedForwardSubject2.h5', load=True)
+	runForSubject(3, '../trained_models/feedForwardSubject3.h5', load=True)
+
+	# Results
+	# Training accuracy = 0.839190729483
+	# Testing Accuracy = 0.734589041096
+	# Using existing model
+	# Training accuracy = 0.798653846154
+	# Testing Accuracy = 0.612039170507
+	# Using existing model
+	# Training accuracy = 0.750583203733
+	# Testing Accuracy = 0.452408256881
+
