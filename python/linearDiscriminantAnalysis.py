@@ -17,32 +17,32 @@ def LDA(input_data, test, actual):
 
 def mainRawData():
 	#Loading Input data (training)
-	d1 = pd.read_csv('../data/Training/train_subject1_psd01.csv',header=None)
-	d2 = pd.read_csv('../data/Training/train_subject1_psd02.csv',header=None)
-	d3 = pd.read_csv('../data/Training/train_subject1_psd03.csv',header=None)
+	d1 = pd.read_csv('../data/training/train_subject1_psd01.csv',header=None)
+	d2 = pd.read_csv('../data/training/train_subject1_psd02.csv',header=None)
+	d3 = pd.read_csv('../data/training/train_subject1_psd03.csv',header=None)
 	input_data_s1 = pd.concat([d1, d2, d3], axis=0)
 
-	d1 = pd.read_csv('../data/Training/train_subject2_psd01.csv',header=None)
-	d2 = pd.read_csv('../data/Training/train_subject2_psd02.csv',header=None)
-	d3 = pd.read_csv('../data/Training/train_subject2_psd03.csv',header=None)
+	d1 = pd.read_csv('../data/training/train_subject2_psd01.csv',header=None)
+	d2 = pd.read_csv('../data/training/train_subject2_psd02.csv',header=None)
+	d3 = pd.read_csv('../data/training/train_subject2_psd03.csv',header=None)
 	input_data_s2 = pd.concat([d1, d2, d3], axis=0)
 
-	d1 = pd.read_csv('../data/Training/train_subject3_psd01.csv',header=None)
-	d2 = pd.read_csv('../data/Training/train_subject3_psd02.csv',header=None)
-	d3 = pd.read_csv('../data/Training/train_subject3_psd03.csv',header=None)
+	d1 = pd.read_csv('../data/training/train_subject3_psd01.csv',header=None)
+	d2 = pd.read_csv('../data/training/train_subject3_psd02.csv',header=None)
+	d3 = pd.read_csv('../data/training/train_subject3_psd03.csv',header=None)
 	input_data_s3 = pd.concat([d1, d2, d3], axis=0)
 
 	#Loading Test data (all subjects)
-	test_s1 = pd.read_csv('../data/Testing/test_subject1_psd04.csv', header=None)
-	actual_s1 = pd.read_csv('../data/Testing/ActualLables/labels_subject1_psd.csv', header=None)
+	test_s1 = pd.read_csv('../data/testing/test_subject1_psd04.csv', header=None)
+	actual_s1 = pd.read_csv('../data/testing/ActualLables/labels_subject1_psd.csv', header=None)
 	actual_s1 = actual_s1[0]
 
-	test_s2 = pd.read_csv('../data/Testing/test_subject2_psd04.csv', header=None)
-	actual_s2 = pd.read_csv('../data/Testing/ActualLables/labels_subject2_psd.csv', header=None)
+	test_s2 = pd.read_csv('../data/testing/test_subject2_psd04.csv', header=None)
+	actual_s2 = pd.read_csv('../data/testing/ActualLables/labels_subject2_psd.csv', header=None)
 	actual_s2 = actual_s2[0]
 
-	test_s3 = pd.read_csv('../data/Testing/test_subject3_psd04.csv', header=None)
-	actual_s3 = pd.read_csv('../data/Testing/ActualLables/labels_subject3_psd.csv', header=None)
+	test_s3 = pd.read_csv('../data/testing/test_subject3_psd04.csv', header=None)
+	actual_s3 = pd.read_csv('../data/testing/ActualLables/labels_subject3_psd.csv', header=None)
 	actual_s3 = actual_s3[0]
 
 	LDA(input_data_s1, test_s1, actual_s1)
@@ -60,23 +60,23 @@ def mainRawData():
 	#Test Accuracy for the subject is = 0.491685779817
 
 def mainPCAData():
-	input_data_s1 = pd.read_csv('../data/Training/pca_data_v2/pca_subject1.csv')
+	input_data_s1 = pd.read_csv('../data/training/pca_data_v2/pca_subject1.csv')
 
-	input_data_s2 = pd.read_csv('../data/Training/pca_data_v2/pca_subject2.csv')
+	input_data_s2 = pd.read_csv('../data/training/pca_data_v2/pca_subject2.csv')
 
-	input_data_s3 = pd.read_csv('../data/Training/pca_data_v2/pca_subject3.csv')
+	input_data_s3 = pd.read_csv('../data/training/pca_data_v2/pca_subject3.csv')
 
 	#Loading Test data (all subjects)
-	test_s1 = pd.read_csv('../data/Testing/pca_data_v2/pca_subject1.csv')
-	actual_s1 = pd.read_csv('../data/Testing/ActualLables/labels_subject1_psd.csv', header=None)
+	test_s1 = pd.read_csv('../data/testing/pca_data_v2/pca_subject1.csv')
+	actual_s1 = pd.read_csv('../data/testing/ActualLables/labels_subject1_psd.csv', header=None)
 	actual_s1 = actual_s1[0]
 
-	test_s2 = pd.read_csv('../data/Testing/pca_data_v2/pca_subject2.csv')
-	actual_s2 = pd.read_csv('../data/Testing/ActualLables/labels_subject2_psd.csv', header=None)
+	test_s2 = pd.read_csv('../data/testing/pca_data_v2/pca_subject2.csv')
+	actual_s2 = pd.read_csv('../data/testing/ActualLables/labels_subject2_psd.csv', header=None)
 	actual_s2 = actual_s2[0]
 
-	test_s3 = pd.read_csv('../data/Testing/pca_data_v2/pca_subject3.csv')
-	actual_s3 = pd.read_csv('../data/Testing/ActualLables/labels_subject3_psd.csv', header=None)
+	test_s3 = pd.read_csv('../data/testing/pca_data_v2/pca_subject3.csv')
+	actual_s3 = pd.read_csv('../data/testing/ActualLables/labels_subject3_psd.csv', header=None)
 	actual_s3 = actual_s3[0]
 
 	LDA(input_data_s1, test_s1, actual_s1)
