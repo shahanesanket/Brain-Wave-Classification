@@ -28,29 +28,7 @@ accuracy = sum(pred == actual)/float(len(actual))
 print accuracy
 
 
-
-# Linear Discriminant Analysis
-
-#input_data = pd.read_csv('../data/')
-input_data = pd.concat([d1, d2, d3], axis=0)
-model = LinearDiscriminantAnalysis()
-scores = cross_val_score(model, input_data.iloc[:,:-1], input_data.iloc[:,-1], cv = 10)
-print scores.mean()
-
-#model.fit(input_data.iloc[:,:-1], input_data.iloc[:,-1])
-pred = model.predict(d3.iloc[:,:-1])
-actual = d3.iloc[:,-1]
-accuracy = sum(pred == actual)/float(len(actual))
-print accuracy
-
-
-d1 = pd.read_csv('../data/train_subject2_psd01.csv',header=None)
-d2 = pd.read_csv('../data/train_subject2_psd02.csv',header=None)
-d3 = pd.read_csv('../data/train_subject2_psd03.csv',header=None)
-
-d1 = pd.read_csv('../data/train_subject3_psd01.csv',header=None)
-d2 = pd.read_csv('../data/train_subject3_psd02.csv',header=None)
-d3 = pd.read_csv('../data/train_subject3_psd03.csv',header=None)
+# Random Forest
 
 
 
@@ -122,6 +100,10 @@ from sklearn.decomposition import PCA
 from sklearn import preprocessing
 
 train = pd.read_csv('../data/Training/uncorrelated_training_data.csv')
+test1_uncor = pd.read_csv('../data/Testing/uncorrelated_subject1_data.csv')
+test2_uncor = pd.read_csv('../data/Testing/uncorrelated_subject2_data.csv')
+test3_uncor = pd.read_csv('../data/Testing/uncorrelated_subject3_data.csv')
+
 vec = list(train.columns)
 train = train[vec[:-1]]
 #preprocessing.scale(temp,axis=1,copy=False)
@@ -136,8 +118,13 @@ test1_pca = pd.DataFrame(test1_pca)
 test2_pca = pd.DataFrame(test2_pca)
 test3_pca = pd.DataFrame(test3_pca)
 
-test1_pca.iloc[:,:40].to_csv('../Data/Testing/pca_subject1.csv', index=False)
-test2_pca.iloc[:,:40].to_csv('../Data/Testing/pca_subject2.csv', index=False)
-test3_pca.iloc[:,:40].to_csv('../Data/Testing/pca_subject3.csv', index=False)
+test1_pca.iloc[:,:75].to_csv('../Data/Testing/pca_subject1.csv', index=False)
+test2_pca.iloc[:,:75].to_csv('../Data/Testing/pca_subject2.csv', index=False)
+test3_pca.iloc[:,:75].to_csv('../Data/Testing/pca_subject3.csv', index=False)
 
 
+
+
+
+
+# 
