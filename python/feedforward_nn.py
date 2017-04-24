@@ -109,10 +109,12 @@ if __name__ == '__main__':
 	# Results
 	# Training accuracy = 0.839190729483
 	# Testing Accuracy = 0.734589041096
+	# Testing Accuracy for step 8 = 0.751141552511
 	# Using existing model
 	# Training accuracy = 0.798653846154
 	# Testing Accuracy = 0.612039170507
+	# Testing Accuracy for step 8 = 0.663594470046
 	# Using existing model
 	# Training accuracy = 0.750583203733
 	# Testing Accuracy = 0.452408256881
-
+	# Testing Accuracy for step 8 = 0.442660550459
