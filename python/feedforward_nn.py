@@ -9,6 +9,7 @@ from keras.layers import Dense
 from keras.utils import np_utils
 #from sklearn.cross_validation import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from linearDiscriminantAnalysis import mergePredictions
 
 
 # fix random seed for reproducibility
@@ -48,15 +49,19 @@ def saveModel(model, path):
 	print 'Model saved'
 	#model.save('../trained_models/ff_nn_3.h5')
 
-def predictFromModel(model, testX, testY, classes):
+def predictFromModel(model, testX, classes):
 	testX = testX.values.astype(float)
-	testY = testY.values
 	predictions = model.predict(testX)
 	#print predictions
 	predictions = np.argmax(predictions,axis=1)
 	p = classes[predictions]
 
+	return p
+
+
+def calcAccuracy(testY, p):
 	# print the accuracy
+	testY = testY.values
 	accuracy = sum(testY == p)/float(len(testY))
 	return accuracy
 
@@ -79,14 +84,21 @@ def runForSubject(subject, savepath, load=False):
 		print 'Using existing model'
 		model = load_model(savepath)
 	
-	print 'Training accuracy = ' + str(predictFromModel(model, X, Y, classes))
+	p = predictFromModel(model, X, classes)
+
+	print 'Training accuracy = ' + str(calcAccuracy(Y, p))
 
 	test_data = pd.read_csv('../data/testing/pca_data_v2/pca_subject'+str(subject)+'.csv')
 	actual = pd.read_csv('../data/testing/ActualLables/labels_subject'+str(subject)+'_psd.csv', header=None)
+	actual8 = pd.read_csv('../data/testing/ActualLables/labels8_subject'+str(subject)+'_psd.csv', header=None)
 	#only get the values from the actual dataframe
 	actual = actual[0]
+	actual8 = actual8[0]
 
-	print 'Testing Accuracy = ' + str(predictFromModel(model, test_data, actual, classes))
+	p = predictFromModel(model, test_data, classes)
+	p8 = mergePredictions(p, 8)
+	print 'Testing Accuracy = ' + str(calcAccuracy(actual, p))
+	print 'Testing Accuracy for step 8 = ' + str(calcAccuracy(actual8, p8))
 
 
 if __name__ == '__main__':
