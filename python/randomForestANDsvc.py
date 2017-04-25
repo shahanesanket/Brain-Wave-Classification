@@ -43,9 +43,9 @@ def calcAccuracy(rf, test_data, actual):
 
 
 def main(subject):
-	# d1 = pd.read_csv('../data/training/train_subject1_psd01.csv',header=None)
-	# d2 = pd.read_csv('../data/training/train_subject1_psd02.csv',header=None)
-	# d3 = pd.read_csv('../data/training/train_subject1_psd03.csv',header=None)
+	# d1 = pd.read_csv('../data/training/train_subject'+str(subject)+'_psd01.csv',header=None)
+	# d2 = pd.read_csv('../data/training/train_subject'+str(subject)+'_psd02.csv',header=None)
+	# d3 = pd.read_csv('../data/training/train_subject'+str(subject)+'_psd03.csv',header=None)
 
 	# input_data2 = pd.concat([d1, d2, d3], axis=0)
 

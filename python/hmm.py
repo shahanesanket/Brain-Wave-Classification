@@ -18,7 +18,7 @@ from hmmlearn.hmm import GaussianHMM
 # d3 = pd.read_csv('../data/training/train_subject1_psd03.csv',header=None)
 
 
-d1 = pd.read_csv('../data/training/pca_data_v2/pca_subject1.csv')
+d1 = pd.read_csv('../data/training/pca_data_v2/pca_subject3.csv')
 #d2 = pd.read_csv('../data/training/pca_data_v2/pca_subject2.csv')
 #d3 = pd.read_csv('../data/training/pca_data_v2/pca_subject3.csv')
 
@@ -44,9 +44,9 @@ def hmmlearnHMM():
 
 	actual = input_data.iloc[:,-1]
 	pred = model.predict(input_data.iloc[:,:-1])
-	pred = [3 if x==2 else x for x in pred]
-	pred = [2 if x==1 else x for x in pred]
-	pred = [7 if x==0 else x for x in pred]
+	pred = [2 if x==2 else x for x in pred]
+	pred = [7 if x==1 else x for x in pred]
+	pred = [3 if x==0 else x for x in pred]
 
 	accuracy = sum(pred == actual)/float(len(actual))
 
@@ -56,3 +56,5 @@ def hmmlearnHMM():
 
 if __name__ == '__main__':
 	hmmlearnHMM()
+
+	#372

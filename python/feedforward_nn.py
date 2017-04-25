@@ -39,7 +39,7 @@ def runModel(X, Y):
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	
 	# Fit the model
-	model.fit(X, dummy_y, nb_epoch=500, batch_size=150,  verbose=2)
+	model.fit(X, dummy_y, nb_epoch=700, batch_size=150,  verbose=2)
 	print 'Training Complete'
 
 	return model
@@ -102,9 +102,9 @@ def runForSubject(subject, savepath, load=False):
 
 
 if __name__ == '__main__':
-	runForSubject(1, '../trained_models/feedForwardSubject1.h5', load=True)
-	runForSubject(2, '../trained_models/feedForwardSubject2.h5', load=True)
-	runForSubject(3, '../trained_models/feedForwardSubject3.h5', load=True)
+	runForSubject(1, '../trained_models/feedForwardSubject1_temp.h5', load=False)
+	#runForSubject(2, '../trained_models/feedForwardSubject2.h5', load=True)
+	#runForSubject(3, '../trained_models/feedForwardSubject3.h5', load=True)
 
 	# Results
 	# Training accuracy = 0.839190729483

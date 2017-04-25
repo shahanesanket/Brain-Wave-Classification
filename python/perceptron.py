@@ -130,4 +130,4 @@ def mainPCAData():
 	# Test Accuracy for the subject at step 8 is = 0.584862385321
 
 if __name__ == '__main__':
-	mainPCAData()
+	mainRawData()
