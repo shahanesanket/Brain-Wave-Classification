@@ -48,7 +48,8 @@ model = Sequential()
 model.add(LSTM(32,input_shape=(dataX.shape[1],dataX.shape[2])))
 model.add(Dense(dataY.shape[1], activation='sigmoid'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(dataX, dataY, nb_epoch=50, batch_size=10, verbose=2, shuffle=False)
+model.fit(dataX, dataY, epochs=50, batch_size=11, verbose=2, shuffle=False, validation_split=0.1)
 # save the trained model
 path = '../trained_models/feedForwardSubject1_LSTM2.h5'
 model.save(path)
+print 'model trained and saved!'
